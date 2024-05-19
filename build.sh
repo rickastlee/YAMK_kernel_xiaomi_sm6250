@@ -6,15 +6,16 @@
 KERNEL_DEFCONFIG=cust_defconfig
 ANYKERNEL3_DIR=$PWD/AnyKernel3/
 FINAL_KERNEL_ZIP=YAMK-miatoll-$(date '+%Y%m%d').zip
-export PATH="$HOME/zyc/bin:$PATH"
+ZYC_CLANG="$HOME/zyc"
+export PATH="$ZYC_CLANG/bin:$PATH"
 export ARCH=arm64
 export KBUILD_BUILD_HOST=cosmos
 export KBUILD_BUILD_USER=cosmic
-export KBUILD_COMPILER_STRING="$($HOME/zyc/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
+export KBUILD_COMPILER_STRING="$($ZYC_CLANG/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
 
-if ! [ -d "$HOME/zyc" ]; then
-echo "Clang not found!"
-exit 1
+if ! [ -d "$ZYC_CLANG" ]; then
+    echo "ZYC clang not found, cloning via HTTPS..."
+    git clone https://github.com/ZyCromerZ/Clang.git "$ZYC_CLANG"
 fi
 
 # Speed up build process
