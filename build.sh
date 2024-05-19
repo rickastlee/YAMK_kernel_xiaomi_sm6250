@@ -15,7 +15,7 @@ if ! [ -d "$ZYC_REPO" ]; then
 fi
 
 if ! [ -d "$ZYC_BIN" ]; then
-    echo "ZYC clang binary not found"
+    echo "ZYC clang binary not found. Please run the compiler script"
     exit 1
 fi
 
