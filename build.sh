@@ -6,16 +6,27 @@
 KERNEL_DEFCONFIG=cust_defconfig
 ANYKERNEL3_DIR=$PWD/AnyKernel3/
 FINAL_KERNEL_ZIP=YAMK-miatoll-$(date '+%Y%m%d').zip
-export PATH="$HOME/zyc/bin:$PATH"
+
+SDCLANG_REMOTE="https://gitlab.com/ZyCromerZ/sdclang-16.1.0.1.git"
+SDCLANG_LOCAL="$HOME/sdclang-16"
+ZYC="$HOME/zyc"
+
+if ! [ -d "$SDCLANG_LOCAL" ]; then
+    echo -e "ZYC Sdclang not found, cloning via HTTPS...\n"
+    git clone --depth=1 "$SDCLANG_REMOTE" "$SDCLANG_LOCAL"
+fi
+
+if ! [ -d "$ZYC" ]; then
+    echo -e "\nCopying Sdclang binaries to ZYC...\n"
+    mkdir "$ZYC"
+    cp -r "$SDCLANG_LOCAL/bin" "$ZYC"
+fi
+
+export PATH="$ZYC/bin:$PATH"
 export ARCH=arm64
 export KBUILD_BUILD_HOST=cosmos
 export KBUILD_BUILD_USER=cosmic
-export KBUILD_COMPILER_STRING="$($HOME/zyc/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
-
-if ! [ -d "$HOME/zyc" ]; then
-echo "Clang not found!"
-exit 1
-fi
+export KBUILD_COMPILER_STRING="$($ZYC/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
 
 # Speed up build process
 MAKE="./makeparallel"
