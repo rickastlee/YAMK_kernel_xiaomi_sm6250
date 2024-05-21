@@ -7,13 +7,18 @@ KERNEL_DEFCONFIG=cust_defconfig
 ANYKERNEL3_DIR=$PWD/AnyKernel3/
 FINAL_KERNEL_ZIP=YAMK-miatoll-$(date '+%Y%m%d').zip
 
-ZYC="$HOME/zyc"
 SDCLANG_REMOTE="https://gitlab.com/ZyCromerZ/sdclang-16.1.0.1.git"
 SDCLANG_LOCAL="$HOME/sdclang-16"
+ZYC="$HOME/zyc"
+
+if ! [ -d "$SDCLANG_LOCAL" ]; then
+    echo -e "ZYC Sdclang not found, cloning via HTTPS...\n"
+    git clone --depth=1 "$SDCLANG_REMOTE" "$SDCLANG_LOCAL"
+fi
 
 if ! [ -d "$ZYC" ]; then
-    echo "ZYC Sdclang not found, cloning via HTTPS..."
-    git clone --depth=1 "$SDCLANG_REMOTE" "$SDCLANG_LOCAL"
+    echo -e "\nCopying Sdclang binaries to ZYC...\n"
+    mkdir "$ZYC"
     cp -r "$SDCLANG_LOCAL/bin" "$ZYC"
 fi
 
