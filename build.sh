@@ -2,6 +2,11 @@
 
 #set -e
 
+if ! [ -d "$HOME/weebx-clang" ]; then
+echo "Clang not found!"
+git clone git@github.com:XSans0/WeebX-Clang.git "$HOME/weebx-clang"
+fi
+
 ## Copy this script inside the kernel directory
 KERNEL_DEFCONFIG=cust_defconfig
 ANYKERNEL3_DIR=$PWD/AnyKernel3/
@@ -11,11 +16,6 @@ export ARCH=arm64
 export KBUILD_BUILD_HOST=cosmos
 export KBUILD_BUILD_USER=cosmic
 export KBUILD_COMPILER_STRING="$($HOME/weebx-clang/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
-
-if ! [ -d "$HOME/weebx-clang" ]; then
-echo "Clang not found! Download from https://github.com/XSans0/WeebX-Clang"
-exit 1
-fi
 
 # Speed up build process
 MAKE="./makeparallel"
